@@ -56,26 +56,38 @@
     <audio data-key="76" src="sounds/tink.wav"></audio>
 
     <script>
-      function playSound(e) {
-        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-        const key = document.querySelector(`div[data-key="${e.keyCode}"`);
-        if (!audio) return;
+      /* Things I learned:
+       * - data-* and why it exist
+       * - attribute selectors (the [] thingys in querySelector)
+       * - HTML audio tags and its methods and props
+       * - event listener 'transitionend'
+       *      which listens when a transition prop in
+       *      CSS end
+       * - event listener 'keydown'
+       *      self-explanatory
+       * - event object (the 'e' in the function parameters)
+       *      and on how it's passed from event listeners
+       *      to the function
+       */
 
+      function playAudio(e) {
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+        if (audio === null) return;
         key.classList.add("playing");
         audio.currentTime = 0;
         audio.play();
       }
 
-      function removeTransition(e) {
-        if (e.propertyName !== "transform") return;
-        this.classList.remove("playing");
+      function removeStyle(e) {
+        if (e.propertyName === "transform") {
+          e.target.classList.remove("playing");
+        }
       }
 
-      const keys = document.querySelectorAll(".key");
-      keys.forEach((key) =>
-        key.addEventListener("transitionend", removeTransition)
-      );
-      window.addEventListener("keydown", playSound);
+      const keys = document.querySelectorAll(".key"); // To get the transform prop in each element
+      keys.forEach((key) => key.addEventListener("transitionend", removeStyle));
+      window.addEventListener("keydown", playAudio);
     </script>
   </body>
 </html>
