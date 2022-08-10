@@ -4,9 +4,37 @@
   <meta charset="UTF-8">
   <title>Key Detection</title>
   <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+
+  <style>
+    .char {
+      position: absolute;
+      top: 50vh;
+      left: 45vw;
+      z-index: 999999999999;
+      font-size: 2em;
+      font-weight: 700;
+      font-family: monospace;
+    }
+  </style>
 </head>
 <body>
+  <div class="char"></div>
 <script>
+  const char = document.querySelector(".char");
+
+  let inputs = ["?", "?", "?", "?", "?", "?"];
+  const secret_code = "amogus";
+  
+  char.textContent = inputs.join("");
+  
+  window.addEventListener("keyup", (e) => {
+    inputs.push(e.key);
+    // inputs.splice(-secret_code.length - 1, inputs.length - secret_code.length);
+    // if (inputs.join("") === secret_code) cornify_add();
+    if (inputs.length > secret_code.length) inputs.shift();
+    inputs.join("") === secret_code ? cornify_add() : null;
+    char.textContent = inputs.join("");
+  });
 </script>
 </body>
 </html>
